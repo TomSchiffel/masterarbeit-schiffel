@@ -14,9 +14,7 @@ Standort: Kliniken Tal (Innenstadt), Rümelinstraße 23, 72070 Tübingen
 
 ### Struktur des Skripts
 
-**Datenimport**
-**HTML-Blöcke**
-**Methoden**
+**Datenimport** --**HTML-Blöcke** --**Methoden**
 
 ### wichtige Methoden
 
