@@ -14,11 +14,11 @@ Standort: Kliniken Tal (Innenstadt), Rümelinstraße 23, 72070 Tübingen
 
 ### Struktur des Skripts
 
-**Datenimport**:
+**Datenimport**
 **HTML-Blöcke**
 **Methoden**
 
-### wichitge Methoden
+### wichtige Methoden
 
 ```python
 def updateGraph(agg, Day, Month, Year)
