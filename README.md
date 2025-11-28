@@ -1,6 +1,5 @@
 # Dashboard zur Visualisierung von Klimadaten  
-## Masterarbeit Tom Schiffel
-Files für die Masterarbeit von Tom Schiffel
+## Masterarbeit von Tom Schiffel
 
 ### Beschreibung
 
@@ -19,7 +18,33 @@ Standort: Kliniken Tal (Innenstadt), Rümelinstraße 23, 72070 Tübingen
 **Methoden**
 
 ### Datenimport
-### wichtige Methoden
+
+Um Daten in diesem Dashboard visualisieren zu können, kann **nur** ein csv.file verwendet werden.  
+An folgender Stelle kann diese eingesetzt werden:  
+```python
+# Datensatz einlesen
+file_path=('CR300Series wlan_Table1_all_3.csv')
+```
+
+**wichtig:**  
+Die Werte sollten:  
+- Kommaseperatiert vorliegen
+- Dezimalstellen mit einem Punkt getrennt
+
+Konfigurationen zum .csv-file können an dieser Stelle angepasst werden:  
+```python
+df = pd.read_csv(
+    file_path,
+    skiprows=4,  # Überspringe nur die erste Zeile, wenn diese Metadaten oder ähnliches enthält
+    names=["TIMESTAMP", "RECORD", "WindDir", "WS_ms_Avg", "AirTC_Avg", "RH_Avg", "BP_mbar_Avg", "Rain_mm_Avg", "HAmount_Avg", "Rain_mm_2_Tot", "SlrkW_Avg", "SlrMJ_Tot", "QR_Avg"],
+    skipinitialspace=True,
+    sep=',',
+    decimal=".",
+    engine='python',
+    parse_dates=["TIMESTAMP"]
+)
+```
+### Methoden
 
 ```python
 def updateGraph(agg, Day, Month, Year)
