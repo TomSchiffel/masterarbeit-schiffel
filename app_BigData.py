@@ -13,9 +13,10 @@ print("Programm wird gestartet...")
 print("-----------------------------")
 
 print("Daten werden eingelesen..")
-# Incorporate data
-file_path=('C:/Users/tomsc/OneDrive/Desktop/Masterarbeit_desktop/dashboard/CR300Series wlan_Table1_all_3.csv')
-# Dann den Rest der Datei einlesen und die Header setzen
+
+# Datensatz einlesen
+file_path=('CR300Series wlan_Table1_all_3.csv')
+
 df = pd.read_csv(
     file_path,
     skiprows=4,  # Überspringe nur die erste Zeile, wenn diese Metadaten oder ähnliches enthält
@@ -38,7 +39,6 @@ df.drop(columns=["HAmount_Avg", "SlrMJ_Tot", "QR_Avg"], inplace=True)
 
 numeric_col = df.columns.drop("TIMESTAMP")
 df[numeric_col] = df[numeric_col].replace(",", ".", regex=True).astype(float)
-# Methoden
 
 # Timestamp in datetime
 df["TIMESTAMP"] = pd.to_datetime(df["TIMESTAMP"], dayfirst=True)
@@ -77,9 +77,6 @@ print(df.tail(10).to_string())
 
 # Diagramme
 
-# Diagramm mit Lufttemperatur (Linie) und NS (Balken)
-
-
 # Solare Einstrahlung
 
 fig_solar = px.imshow(
@@ -88,7 +85,7 @@ fig_solar = px.imshow(
     aspect='auto'
 )
 
-# Aktuelles Kachel
+# Klimastation
 
 latest_entry = df.loc[df.index.max()]
 
@@ -132,7 +129,7 @@ mapbox_style = dict(
     font=dict(color="orange", size=13, family="Arial")
 )
 
-# Temperatur
+# Lufttemperatur
 map.add_annotation(
     text=f"{latest_entry['AirTC_Avg']:.0f} °C",
     xref="paper", 
@@ -162,13 +159,6 @@ map.add_annotation(
     **mapbox_style
 )
 
-# Relative Luftfeuchtigkeit
-
-#fig_RH = go.Figure()
-
-# In dein Dashboard einfügen
-#kachel1 = fig
-
 # Initialize the app
 app = Dash()
 
@@ -187,7 +177,6 @@ table_columns= [
 ]
 
 # Layout für Kacheln
-
 kachel_layout = {
         "backroundColor": "#FaF9F6",
         "border": "none",
@@ -206,7 +195,7 @@ app.layout = html.Div(
         "overflow": "hidden"
     },
     children=[
-        # Hauptbereich mit 2 Spalten
+        # Hauptbereich mit 3 Spalten
         html.Div(
             style={
                 "flex": "1",
@@ -227,7 +216,7 @@ app.layout = html.Div(
                 html.Div(
                     style={"flex": "2", "display": "flex", "flexDirection": "column"},
                     children=[
-                        # Dropdown
+                        # Datums-Auswahl Dropdown
                         html.Div(
                             id="kachel_date",
                             children=[
@@ -304,7 +293,6 @@ app.layout = html.Div(
                             },
                         ),
                     
-
                         # Relative Luftfeuchtigkeit
                         html.Div(
                             id="kachel_RH",
@@ -331,7 +319,7 @@ app.layout = html.Div(
                                 dcc.Markdown(
                                     """
                                     **Relative Luftfeuchtigkeit**
-                                    In dieser Kachel wird der Minimale und Maximale Wert (des Tages, Monats, Jahres) der relativen Luftfeuchtigkeit dargestellt. Fahren Sie mit der Maus über einen Balken um genaue Werte zu erhalten. 
+                                    In dieser Kachel wird der minimale und maximale Wert (des Tages, Monats, Jahres) der relativen Luftfeuchtigkeit dargestellt. Fahren Sie mit der Maus über einen Balken um genauere Werte zu erhalten. 
                                     """,
                                     id="info_box_RH",
                                     style={
@@ -363,7 +351,7 @@ app.layout = html.Div(
                             },
                         ),
 
-                        # Placeholder 2
+                        # Klimastation
                         html.Div(
                             id="kachel_card",
                             children=[
@@ -391,7 +379,7 @@ app.layout = html.Div(
                                     """
                                     **Klimastation**
                                     In dieser Kachel wird der Standort der Klimastation auf der Karte (orangener Punkt) verortet.
-                                    Zusätzlich werden aktuelle **Temperatur** (oben links), die aktuelle **Luftfeuchtigkeit** (oben rechts) und der aktuelle **Luftdruck** (unten links) angegeben. 
+                                    Zusätzlich werden die aktuelle **Temperatur** (oben links), die aktuelle ** Relative Luftfeuchtigkeit** (oben rechts) und der aktuelle **Luftdruck** (unten links) angegeben. 
                                     """,
                                     id="info_box",
                                     style={
@@ -520,7 +508,7 @@ app.layout = html.Div(
                             },
                         ),
                         
-                        # Lufttemperatur-Diagramm
+                        # Lufttemperatur & Niederschlag
                         html.Div(
                             id="kachel_temp_ns",
                             children=[
@@ -623,7 +611,7 @@ app.layout = html.Div(
                                     In dieser Kachel wird die Windrichtung und die Windgeschwindigkeit visualisiert.
                                     Umso häufiger eine Windrichtung vorkommt, desto weiter nach Außen in der Windrose geht der Balken.
                                     Die Windgeschwindigkeit wird farblich dargestellt. 
-                                    Die Windrichtungen wurde hier Stündlich gemittelt und gezählt wie oft eine Windrichtung vorkam. Fährt man mit dem 
+                                    Die Windrichtungen wurden hier stündlich gemittelt und gezählt wie oft eine Windrichtung vorkam. Fährt man mit dem 
                                     Mauszeiger über die Visualisierung, so erhält man unter dem Wert "r:" die Verteilung wie oft der Wind aus der entsprechenden Richtung kommt
                                     und die Verteilung wie oft mit welcher Geschwindigkeit.
                                     
@@ -659,7 +647,7 @@ app.layout = html.Div(
                             },
                         ),
 
-                # Placeholder 3
+                # Solare Einstrahlung
                 html.Div(
                     style={"flex": "6", "display": "flex", "flexDirection": "column"},
                     children=[
@@ -689,7 +677,7 @@ app.layout = html.Div(
                                     **Solare Einstrahlung:**
                                     Diese Visualisierung zeigt wie viel kW/qm zum jeweiligen Zeitpunkt von der Klimastation erfasst wurden.
                                     Weiße Stellen in der Darstellung zeigen Lücken in der Datenerhebung
-                                    **Achtung** 0kW/m^2 wird hier in hellgelb dargestellt!
+                                    **Achtung** 0kW/qm wird hier in hellgelb dargestellt!
                                     
 
                                     """,
@@ -729,7 +717,7 @@ app.layout = html.Div(
         ),
     ])
 
-# Checkliste für Klimavariablen
+# Callback Checkliste für Klimavariablen
 
 @app.callback(
         [
@@ -783,7 +771,7 @@ def updateVariables(selected, temp_ns_style, RH_style, card_style, wind_style, S
         apply(date_style, "date")
     ]
 
-# Dropdown Datumsauswahl
+# Callback Dropdown Datumsauswahl
 @app.callback(
         Output("Day", "style"),
         Output("Month", "style"),
@@ -803,7 +791,7 @@ def calender(zeitraum):
     else:
         return hidden, hidden, visible
 
-# Verbindung Dropdown Diagramm
+# Callback Dropdown Diagramm
 
 @app.callback(
         Output("temperature-graph", "figure"),
@@ -812,7 +800,7 @@ def calender(zeitraum):
         Input("Month", "date"),
         Input("Year", "value")
 )
-# Methode um den graph zu updaten
+# Methode für Temperatur und Niederschlag
 
 def updateGraph(agg, Day, Month, Year):
     if agg == 'D':
@@ -936,6 +924,7 @@ def updateGraph(agg, Day, Month, Year):
 
     return kachel1_new
 
+# callback Wind
 @app.callback(
     Output("Windrose", "figure"),
     [
@@ -1020,7 +1009,7 @@ def updateRose(time, Day, Month, Year):
 
     return fig_wind
 
-# callback für Heatmap
+# callback Solare Einstrahlung
 @app.callback(
         Output("HM-solar", "figure"),
         [
@@ -1301,10 +1290,9 @@ def displayInfoBox_SE(n_clicks, style):
     return style
 
 
-# Run the app
+# App 
 if __name__ == '__main__':
-    app.run(debug=True,
-            dev_tools_ui=False
+    app.run(host="0.0.0.0", port=8080, debug=False,
             )
 
 
