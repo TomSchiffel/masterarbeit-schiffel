@@ -14,8 +14,11 @@ Standort: Kliniken Tal (Innenstadt), Rümelinstraße 23, 72070 Tübingen
 
 ### Struktur des Skripts
 
-**Datenimport** --**HTML-Blöcke** --**Methoden**
+**Datenimport**   
+**HTML-Blöcke**  
+**Methoden**
 
+### Datenimport
 ### wichtige Methoden
 
 ```python
@@ -42,8 +45,8 @@ Ein öffentlicher Zugriff auf das Dashboard erfolgt durch die folgende URL
 URL: https://climate-station-tue-ruem-492515949966.europe-west1.run.app/ 
 
 ### Projektstruktur
-├── app_BigData.py                # Dash-App
-├── README.md                     # Diese Projektbeschreibung
+├── app_BigData.py                  # Dash-App  
+├── README.md                       # Projektbeschreibung  
 
 Für die Bereitstellung des Codes wird der Rohdatensatz (.csv) nicht in das Projekt integriert. 
 
