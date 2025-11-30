@@ -69,6 +69,13 @@ Ein öffentlicher Zugriff auf das Dashboard erfolgt durch die folgende URL
 
 URL: https://climate-station-tue-ruem-492515949966.europe-west1.run.app/ 
 
+### Starten (lokal)
+
+- ```python app_BigData.py``` + **CR300Series wlan_Table1_all_3.csv** in den selben (lokalen) Ordner packen.
+- Im Terminal in lokalen Ordner navigieren
+- ```python python app_BigData.py``` eingeben
+- Im Terminal wird *Dash is running on http://127.0.0.1:8050/* bereitgestellt. Unter diesem ist die App zu starten,
+
 ### Projektstruktur
 ├── app_BigData.py                  # Dash-App  
 ├── README.md                       # Projektbeschreibung  
