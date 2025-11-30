@@ -75,4 +75,7 @@ URL: https://climate-station-tue-ruem-492515949966.europe-west1.run.app/
 
 Für die Bereitstellung des Codes wird der Rohdatensatz (.csv) nicht in das Projekt integriert. 
 
+### Mögliche Probleme
+
+- Sollte das Zoomen in den Diagrammen nicht mehr zurück gestellt werden könnnen, empfielt es sich die Seite neu zu laden
 
